@@ -84,14 +84,17 @@ to go
       eat-grass  ; sheep eat grass only if running the sheep-wolves-grass model version
       death ; sheep die from starvation only if running the sheep-wolves-grass model version
     ]
+    reproduce-rabbits
   ]
   ask wolves [
     move
     set energy energy - 1  ; wolves lose energy as they move
     eat-sheep ; wolves eat a sheep on their patch
+    eat-rabbit
     death ; wolves die if they run out of energy
     reproduce-wolves ; wolves reproduce at a random rate governed by a slider
   ]
+
 
   if model-version = "sheep-wolves-grass" [ ask patches [ grow-grass ] ]
 
@@ -136,6 +139,14 @@ end
 
 to eat-sheep  ; wolf procedure
   let prey one-of sheep-here                    ; grab a random sheep
+  if prey != nobody  [                          ; did we get one? if so,
+    ask prey [ die ]                            ; kill it, and...
+    set energy energy + wolf-gain-from-food     ; get energy from eating
+  ]
+end
+
+to eat-rabbit  ; wolf procedure
+  let prey one-of rabbits-here                    ; grab a random sheep
   if prey != nobody  [                          ; did we get one? if so,
     ask prey [ die ]                            ; kill it, and...
     set energy energy + wolf-gain-from-food     ; get energy from eating
@@ -477,6 +488,16 @@ rabbits-reproduce
 1
 %
 HORIZONTAL
+
+TEXTBOX
+360
+175
+510
+191
+Rabbit Settings
+11
+0.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
