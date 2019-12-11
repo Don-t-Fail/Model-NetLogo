@@ -67,25 +67,25 @@ to go
   if not any? wolves and count sheep > max-sheep [ user-message "The prey have inherited the earth" stop ]
   ask sheep [
     move
-
     ; in this version, sheep eat grass, grass grows, and it costs sheep energy to move
     if model-version = "sheep-wolves-grass" [
       set energy energy - 1  ; deduct energy for sheep only if running sheep-wolves-grass model version
-      eat-grass  ; sheep eat grass only if running the sheep-wolves-grass model version
+      eat-grass-sheep  ; sheep eat grass only if running the sheep-wolves-grass model version
       death ; sheep die from starvation only if running the sheep-wolves-grass model version
     ]
-
     reproduce-sheep  ; sheep reproduce at a random rate governed by a slider
   ]
+
   ask rabbits [
     move
     if model-version = "sheep-wolves-grass" [
       set energy energy - 1  ; deduct energy for sheep only if running sheep-wolves-grass model version
-      eat-grass  ; sheep eat grass only if running the sheep-wolves-grass model version
+      eat-grass-rabbit  ; sheep eat grass only if running the sheep-wolves-grass model version
       death ; sheep die from starvation only if running the sheep-wolves-grass model version
     ]
     reproduce-rabbits
   ]
+
   ask wolves [
     move
     set energy energy - 1  ; wolves lose energy as they move
@@ -108,11 +108,19 @@ to move  ; turtle procedure
   fd 1
 end
 
-to eat-grass  ; sheep procedure
+to eat-grass-sheep  ; sheep procedure
   ; sheep eat grass and turn the patch brown
   if pcolor = green [
     set pcolor brown
     set energy energy + sheep-gain-from-food  ; sheep gain energy by eating
+  ]
+end
+
+to eat-grass-rabbit  ; sheep procedure
+  ; sheep eat grass and turn the patch brown
+  if pcolor = green [
+    set pcolor brown
+    set energy energy + rabbits-gain-from-food  ; sheep gain energy by eating
   ]
 end
 
@@ -493,7 +501,7 @@ TEXTBOX
 360
 175
 510
-191
+193
 Rabbit Settings
 11
 0.0
