@@ -41,8 +41,8 @@ to setup
   create-rabbits initial-number-rabbits
   [
     set shape "default"
-    set color blue
-    set size 1.5
+    set color yellow
+    set size 2
     set label-color blue - 2
     set energy random (2 * rabbits-gain-from-food)
     setxy random-xcor random-ycor
@@ -492,7 +492,7 @@ rabbits-reproduce
 rabbits-reproduce
 0
 20
-4.0
+10.0
 1
 1
 %
