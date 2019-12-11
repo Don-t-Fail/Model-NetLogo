@@ -1,13 +1,13 @@
 globals [ max-sheep max-rabbits ]  ; don't let the sheep population grow too large
 
 ; Sheep and wolves are both breeds of turtles
-breed [ sheep a-sheep ]  ; sheep is its own plural, so we use "a-sheep" as the singular
+breed [ sheep a-sheep ]
 breed [ rabbits rabbit ]
 breed [ wolves wolf ]
 
-turtles-own [ energy ]       ; both wolves and sheep have energy
+turtles-own [ energy ]
 
-patches-own [ countdown ]    ; this is for the sheep-wolves-grass model version
+patches-own [ countdown ]
 
 to setup
   clear-all
@@ -28,7 +28,7 @@ to setup
     ask patches [ set pcolor green ]
   ]
 
-  create-sheep initial-number-sheep  ; create the sheep, then initialize their variables
+  create-sheep initial-number-sheep
   [
     set shape  "sheep"
     set color white
@@ -48,7 +48,7 @@ to setup
     setxy random-xcor random-ycor
   ]
 
-  create-wolves initial-number-wolves  ; create the wolves, then initialize their variables
+  create-wolves initial-number-wolves
   [
     set shape "wolf"
     set color black
@@ -69,11 +69,11 @@ to go
     move
     ; in this version, sheep eat grass, grass grows, and it costs sheep energy to move
     if model-version = "sheep-wolves-grass" [
-      set energy energy - 1  ; deduct energy for sheep only if running sheep-wolves-grass model version
-      eat-grass-sheep  ; sheep eat grass only if running the sheep-wolves-grass model version
-      death ; sheep die from starvation only if running the sheep-wolves-grass model version
+      set energy energy - 1
+      eat-grass-sheep
+      death
     ]
-    reproduce-sheep  ; sheep reproduce at a random rate governed by a slider
+    reproduce-sheep
   ]
 
   ask rabbits [
@@ -139,9 +139,9 @@ to reproduce-rabbits
 end
 
 to reproduce-wolves  ; wolf procedure
-  if random-float 100 < wolf-reproduce [  ; throw "dice" to see if you will reproduce
-    set energy (energy / 2)               ; divide energy between parent and offspring
-    hatch 1 [ rt random-float 360 fd 1 ]  ; hatch an offspring and move it forward 1 step
+  if random-float 100 < wolf-reproduce [
+    set energy (energy / 2)
+    hatch 1 [ rt random-float 360 fd 1 ]
   ]
 end
 
@@ -154,14 +154,14 @@ to eat-sheep  ; wolf procedure
 end
 
 to eat-rabbit  ; wolf procedure
-  let prey one-of rabbits-here                    ; grab a random sheep
-  if prey != nobody  [                          ; did we get one? if so,
-    ask prey [ die ]                            ; kill it, and...
-    set energy energy + wolf-gain-from-food     ; get energy from eating
+  let prey one-of rabbits-here
+  if prey != nobody  [
+    ask prey [ die ]
+    set energy energy + wolf-gain-from-food
   ]
 end
 
-to death  ; turtle procedure (i.e. both wolf and sheep procedure)
+to death  ; turtle procedure
   ; when energy dips below zero, die
   if energy < 0 [ die ]
 end
@@ -228,7 +228,7 @@ initial-number-sheep
 initial-number-sheep
 0
 250
-100.0
+0.0
 1
 1
 NIL
@@ -273,7 +273,7 @@ initial-number-wolves
 initial-number-wolves
 0
 250
-50.0
+15.0
 1
 1
 NIL
@@ -303,7 +303,7 @@ wolf-reproduce
 wolf-reproduce
 0.0
 20.0
-5.0
+0.0
 1.0
 1
 %
@@ -451,7 +451,7 @@ CHOOSER
 model-version
 model-version
 "sheep-wolves" "sheep-wolves-grass"
-1
+0
 
 SLIDER
 360
@@ -462,7 +462,7 @@ initial-number-rabbits
 initial-number-rabbits
 0
 250
-100.0
+10.0
 1
 1
 NIL
@@ -492,7 +492,7 @@ rabbits-reproduce
 rabbits-reproduce
 0
 20
-10.0
+0.0
 1
 1
 %
