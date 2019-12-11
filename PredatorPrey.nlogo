@@ -41,7 +41,7 @@ to setup
   create-rabbits initial-number-rabbits
   [
     set shape "default"
-    set color white
+    set color blue
     set size 1.5
     set label-color blue - 2
     set energy random (2 * rabbits-gain-from-food)
@@ -377,6 +377,7 @@ PENS
 "sheep" 1.0 0 -612749 true "" "plot count sheep"
 "wolves" 1.0 0 -16449023 true "" "plot count wolves"
 "grass / 4" 1.0 0 -10899396 true "" "if model-version = \"sheep-wolves-grass\" [ plot count grass / 4 ]"
+"rabbits" 1.0 0 -955883 true "" "plot count rabbits"
 
 MONITOR
 41
@@ -461,7 +462,7 @@ initial-number-rabbits
 initial-number-rabbits
 0
 250
-50.0
+100.0
 1
 1
 NIL
@@ -506,6 +507,17 @@ Rabbit Settings
 11
 0.0
 1
+
+MONITOR
+275
+305
+332
+350
+rabbits
+count rabbits
+17
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
