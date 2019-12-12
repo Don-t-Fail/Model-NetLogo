@@ -201,8 +201,26 @@ to-report average-heading-towards-flockmates  ;; turtle procedure
 end
 
 to move  ; turtle procedure
-  rt random 50
-  lt random 50
+
+  let r count rabbits in-radius wolf-attack-range
+  let s count sheep in-radius wolf-attack-range
+  let rabbitsl max-one-of rabbits in-radius wolf-attack-range [2]
+  let sheepl max-one-of sheep in-radius wolf-attack-range [ 1 ]
+
+  ifelse (rabbitsl != nobody and r < flock-size-threshold-rabbit)
+  [ face rabbitsl
+    fd 1
+  ]
+  [ rt 180
+    fd 2
+  ]
+  ifelse (sheepl != nobody and s < flock-size-threshold-sheep)
+  [ face sheepl
+    fd 1
+  ]
+  [ rt 180
+    fd 2
+  ]
   fd 1
 end
 
@@ -386,7 +404,7 @@ wolf-gain-from-food
 wolf-gain-from-food
 0.0
 100.0
-20.0
+100.0
 1.0
 1
 NIL
@@ -626,7 +644,7 @@ minimum-seperation
 minimum-seperation
 0
 5
-0.75
+1.5
 0.25
 1
 degrees
@@ -642,6 +660,51 @@ reproduction-flag
 1
 1
 -1000
+
+SLIDER
+365
+355
+525
+388
+wolf-attack-range
+wolf-attack-range
+0
+15
+5.5
+0.5
+1
+NIL
+HORIZONTAL
+
+SLIDER
+365
+400
+525
+433
+flock-size-threshold-rabbit
+flock-size-threshold-rabbit
+0
+25
+13.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+365
+445
+525
+478
+flock-size-threshold-sheep
+flock-size-threshold-sheep
+0
+25
+10.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -1071,7 +1134,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.1.1
+NetLogo 6.0.1
 @#$#@#$#@
 set model-version "sheep-wolves-grass"
 set show-energy? false
