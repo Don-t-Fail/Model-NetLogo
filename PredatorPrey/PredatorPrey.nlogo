@@ -17,8 +17,8 @@ to setup
   clear-all
   ;;ifelse netlogo-web? [ set max-sheep 10000 ] [ set max-sheep 30000 ]
 
-  set max-sheep 500
-  set max-rabbits 500
+  set max-sheep 5000
+  set max-rabbits 5000
 
   ; Check model-version switch
   ; if we're not modeling grass, then the sheep don't need to eat to survive
@@ -674,7 +674,7 @@ wolf-attack-range
 wolf-attack-range
 0
 15
-0.0
+5.0
 0.5
 1
 NIL
@@ -717,7 +717,7 @@ SWITCH
 388
 allow-flocking
 allow-flocking
-1
+0
 1
 -1000
 
