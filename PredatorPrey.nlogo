@@ -71,6 +71,7 @@ to setup
 end
 
 to go
+  if ticks = max-ticks [ user-message "Max ticks reached" stop ]
   ; stop the model if there are no wolves and no sheep
   if not any? turtles [ stop ]
   ; stop the model if there are no wolves and the number of sheep gets very large
@@ -86,7 +87,7 @@ to go
     ]
     if reproduction-flag [ reproduce-sheep ]
 
-    flock-sheep
+    if allow-flocking [ flock-sheep ]
   ]
 
   ask rabbits [
@@ -99,7 +100,7 @@ to go
     ]
     if reproduction-flag [ reproduce-rabbits ]
 
-    flock-rabbit
+    if allow-flocking [ flock-rabbit ]
   ]
 
   ask wolves [
@@ -344,7 +345,7 @@ initial-number-sheep
 initial-number-sheep
 0
 250
-250.0
+50.0
 1
 1
 NIL
@@ -389,7 +390,7 @@ initial-number-wolves
 initial-number-wolves
 0
 250
-15.0
+50.0
 1
 1
 NIL
@@ -404,7 +405,7 @@ wolf-gain-from-food
 wolf-gain-from-food
 0.0
 100.0
-100.0
+20.0
 1.0
 1
 NIL
@@ -419,7 +420,7 @@ wolf-reproduce
 wolf-reproduce
 0.0
 20.0
-0.0
+5.0
 1.0
 1
 %
@@ -578,7 +579,7 @@ initial-number-rabbits
 initial-number-rabbits
 0
 250
-10.0
+50.0
 1
 1
 NIL
@@ -608,7 +609,7 @@ rabbits-reproduce
 rabbits-reproduce
 0
 20
-0.0
+4.0
 1
 1
 %
@@ -663,14 +664,14 @@ reproduction-flag
 
 SLIDER
 365
-355
+400
 525
-388
+433
 wolf-attack-range
 wolf-attack-range
 0
 15
-5.5
+0.0
 0.5
 1
 NIL
@@ -678,9 +679,9 @@ HORIZONTAL
 
 SLIDER
 365
-400
+445
 525
-433
+478
 flock-size-threshold-rabbit
 flock-size-threshold-rabbit
 0
@@ -693,9 +694,9 @@ HORIZONTAL
 
 SLIDER
 365
-445
+490
 525
-478
+523
 flock-size-threshold-sheep
 flock-size-threshold-sheep
 0
@@ -705,6 +706,28 @@ flock-size-threshold-sheep
 1
 NIL
 HORIZONTAL
+
+SWITCH
+365
+355
+515
+388
+allow-flocking
+allow-flocking
+1
+1
+-1000
+
+INPUTBOX
+500
+115
+560
+175
+max-ticks
+500.0
+1
+0
+Number
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -1134,7 +1157,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.0.1
+NetLogo 6.1.1
 @#$#@#$#@
 set model-version "sheep-wolves-grass"
 set show-energy? false
