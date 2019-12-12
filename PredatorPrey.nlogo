@@ -84,7 +84,7 @@ to go
       eat-grass-sheep
       death
     ]
-    ;reproduce-sheep
+    if reproduction-flag [ reproduce-sheep ]
 
     flock-sheep
   ]
@@ -97,7 +97,7 @@ to go
       eat-grass-rabbit  ; sheep eat grass only if running the sheep-wolves-grass model version
       death ; sheep die from starvation only if running the sheep-wolves-grass model version
     ]
-    ;reproduce-rabbits
+    if reproduction-flag [ reproduce-rabbits ]
 
     flock-rabbit
   ]
@@ -108,7 +108,7 @@ to go
     eat-sheep ; wolves eat a sheep on their patch
     eat-rabbit
     death ; wolves die if they run out of energy
-    reproduce-wolves ; wolves reproduce at a random rate governed by a slider
+    if reproduction-flag [ reproduce-wolves ] ; wolves reproduce at a random rate governed by a slider
   ]
 
 
@@ -326,7 +326,7 @@ initial-number-sheep
 initial-number-sheep
 0
 250
-0.0
+250.0
 1
 1
 NIL
@@ -631,6 +631,17 @@ minimum-seperation
 1
 degrees
 HORIZONTAL
+
+SWITCH
+365
+310
+512
+343
+reproduction-flag
+reproduction-flag
+1
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?
