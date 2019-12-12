@@ -86,7 +86,7 @@ to go
     ]
     if reproduction-flag [ reproduce-sheep ]
 
-    flock-sheep
+    if allow-flocking [ flock-sheep ]
   ]
 
   ask rabbits [
@@ -99,7 +99,7 @@ to go
     ]
     if reproduction-flag [ reproduce-rabbits ]
 
-    flock-rabbit
+    if allow-flocking [ flock-rabbit ]
   ]
 
   ask wolves [
@@ -633,12 +633,23 @@ degrees
 HORIZONTAL
 
 SWITCH
-365
-310
-512
-343
+390
+280
+530
+313
 reproduction-flag
 reproduction-flag
+1
+1
+-1000
+
+SWITCH
+390
+320
+530
+353
+allow-flocking
+allow-flocking
 1
 1
 -1000
