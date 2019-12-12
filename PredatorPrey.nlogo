@@ -5,7 +5,11 @@ breed [ sheep a-sheep ]
 breed [ rabbits rabbit ]
 breed [ wolves wolf ]
 
-turtles-own [ energy ]
+turtles-own [
+  energy
+  flockmates
+  nearest-neighbor
+]
 
 patches-own [ countdown ]
 
@@ -36,6 +40,8 @@ to setup
     set label-color blue - 2
     set energy random (2 * sheep-gain-from-food)
     setxy random-xcor random-ycor
+
+    set flockmates no-turtles
   ]
 
   create-rabbits initial-number-rabbits
@@ -46,6 +52,8 @@ to setup
     set label-color blue - 2
     set energy random (2 * rabbits-gain-from-food)
     setxy random-xcor random-ycor
+
+    set flockmates no-turtles
   ]
 
   create-wolves initial-number-wolves
@@ -55,6 +63,8 @@ to setup
     set size 2  ; easier to see
     set energy random (2 * wolf-gain-from-food)
     setxy random-xcor random-ycor
+
+    set flockmates no-turtles
   ]
   display-labels
   reset-ticks
@@ -66,24 +76,30 @@ to go
   ; stop the model if there are no wolves and the number of sheep gets very large
   if not any? wolves and count sheep > max-sheep [ user-message "The prey have inherited the earth" stop ]
   ask sheep [
-    move
+    fd 0.2
+    ;move
     ; in this version, sheep eat grass, grass grows, and it costs sheep energy to move
     if model-version = "sheep-wolves-grass" [
       set energy energy - 1
       eat-grass-sheep
       death
     ]
-    reproduce-sheep
+    ;reproduce-sheep
+
+    flock-sheep
   ]
 
   ask rabbits [
-    move
+    fd 0.2
+    ;move
     if model-version = "sheep-wolves-grass" [
       set energy energy - 1  ; deduct energy for sheep only if running sheep-wolves-grass model version
       eat-grass-rabbit  ; sheep eat grass only if running the sheep-wolves-grass model version
       death ; sheep die from starvation only if running the sheep-wolves-grass model version
     ]
-    reproduce-rabbits
+    ;reproduce-rabbits
+
+    flock-rabbit
   ]
 
   ask wolves [
@@ -100,6 +116,88 @@ to go
 
   tick
   display-labels
+end
+
+to flock-sheep  ;; turtle procedure
+  find-flockmates-sheep
+  if any? flockmates
+    [ find-nearest-neighbor
+      ifelse distance nearest-neighbor < minimum-seperation
+        [ separate ]
+        [ align
+          cohere ] ]
+end
+
+to flock-rabbit  ;; turtle procedure
+  find-flockmates-rabbit
+  if any? flockmates
+    [ find-nearest-neighbor
+      ifelse distance nearest-neighbor < minimum-seperation
+        [ separate ]
+        [ align
+          cohere ] ]
+end
+
+to find-flockmates-sheep  ;; turtle procedure
+  set flockmates other sheep in-radius 5
+end
+
+to find-flockmates-rabbit  ;; turtle procedure
+  set flockmates other rabbits in-radius 5
+end
+
+to find-nearest-neighbor ;; turtle procedure
+  set nearest-neighbor min-one-of flockmates [distance myself]
+end
+
+to separate  ;; turtle procedure
+  turn-away ([heading] of nearest-neighbor) 1.5
+end
+
+to turn-away [new-heading max-turn]  ;; turtle procedure
+  turn-at-most (subtract-headings heading new-heading) max-turn
+end
+
+to turn-towards [new-heading max-turn]  ;; turtle procedure
+  turn-at-most (subtract-headings new-heading heading) max-turn
+end
+
+to turn-at-most [turn max-turn]  ;; turtle procedure
+  ifelse abs turn > max-turn
+    [ ifelse turn > 0
+        [ rt max-turn ]
+        [ lt max-turn ] ]
+    [ rt turn ]
+end
+
+to cohere  ;; turtle procedure
+  turn-towards average-heading-towards-flockmates 3
+end
+
+to align  ;; turtle procedure
+  turn-towards average-flockmate-heading 12.5
+end
+
+to-report average-flockmate-heading  ;; turtle procedure
+  ;; We can't just average the heading variables here.
+  ;; For example, the average of 1 and 359 should be 0,
+  ;; not 180.  So we have to use trigonometry.
+  let x-component sum [dx] of flockmates
+  let y-component sum [dy] of flockmates
+  ifelse x-component = 0 and y-component = 0
+    [ report heading ]
+    [ report atan x-component y-component ]
+end
+
+to-report average-heading-towards-flockmates  ;; turtle procedure
+  ;; "towards myself" gives us the heading from the other turtle
+  ;; to me, but we want the heading from me to the other turtle,
+  ;; so we add 180
+  let x-component mean [sin (towards myself + 180)] of flockmates
+  let y-component mean [cos (towards myself + 180)] of flockmates
+  ifelse x-component = 0 and y-component = 0
+    [ report heading ]
+    [ report atan x-component y-component ]
 end
 
 to move  ; turtle procedure
@@ -518,6 +616,21 @@ count rabbits
 17
 1
 11
+
+SLIDER
+265
+100
+477
+133
+minimum-seperation
+minimum-seperation
+0
+5
+0.75
+0.25
+1
+degrees
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
