@@ -15,7 +15,10 @@ patches-own [ countdown ]
 
 to setup
   clear-all
-  ifelse netlogo-web? [ set max-sheep 10000 ] [ set max-sheep 30000 ]
+  ;;ifelse netlogo-web? [ set max-sheep 10000 ] [ set max-sheep 30000 ]
+
+  set max-sheep 300
+  set max-rabbits 300
 
   ; Check model-version switch
   ; if we're not modeling grass, then the sheep don't need to eat to survive
@@ -75,7 +78,7 @@ to go
   ; stop the model if there are no wolves and no sheep
   if not any? turtles [ stop ]
   ; stop the model if there are no wolves and the number of sheep gets very large
-  if not any? wolves and count sheep > max-sheep [ user-message "The prey have inherited the earth" stop ]
+  if not any? wolves and count sheep > max-sheep or rabbits > max-rabbits [ user-message "The prey have inherited the earth" stop ]
   ask sheep [
     fd 0.2
     ;move
@@ -310,9 +313,9 @@ to display-labels
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-595
+645
 10
-1113
+1163
 529
 -1
 -1
@@ -658,7 +661,7 @@ SWITCH
 343
 reproduction-flag
 reproduction-flag
-1
+0
 1
 -1000
 
@@ -719,10 +722,10 @@ allow-flocking
 -1000
 
 INPUTBOX
-500
-115
 560
-175
+60
+620
+120
 max-ticks
 500.0
 1
